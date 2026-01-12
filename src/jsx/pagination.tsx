@@ -17,17 +17,8 @@ export function PaginationButtons({
   return (
     <ActionRow>
       <Button onClick={() => onPrev?.()} label="◀" disabled={currentPage === 1 || disabled} />
-      <Button
-        custom_id="activepage"
-        label={`${currentPage} / ${totalPages ?? "?"}`}
-        style="Secondary"
-        disabled
-      />
-      <Button
-        onClick={() => onNext?.()}
-        label="▶"
-        disabled={currentPage === totalPages || disabled}
-      />
+      <Button custom_id="activepage" label={`${currentPage} / ${totalPages ?? "?"}`} style="Secondary" disabled />
+      <Button onClick={() => onNext?.()} label="▶" disabled={currentPage === totalPages || disabled} />
     </ActionRow>
   );
 }

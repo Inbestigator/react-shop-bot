@@ -1,6 +1,6 @@
 import { patchInteraction } from "@dressed/react";
 import type { ServerConfig } from "dressed/server";
-import Providers from "./src/providers";
+import Providers from "./src/jsx/providers";
 
 export default {
   build: { extensions: ["tsx", "ts"] },

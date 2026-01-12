@@ -11,20 +11,14 @@ Object.assign(serverConfig, config);
 const files = await Promise.all(
   ["commands", "components", "events"].map(async (d) =>
     Promise.all(
-      (
-        await crawlDir("src", d, config.build?.extensions)
-      ).map(async (f) => ({
+      (await crawlDir("src", d, config.build?.extensions)).map(async (f) => ({
         ...f,
         exports: await import(resolve(f.path)),
-      }))
-    )
-  )
+      })),
+    ),
+  ),
 );
 
-createServer(
-  parseCommands(files[0] ?? []),
-  parseComponents(files[1] ?? []),
-  parseEvents(files[2] ?? [])
-);
+createServer(parseCommands(files[0] ?? []), parseComponents(files[1] ?? []), parseEvents(files[2] ?? []));
 
 watch("./src", { recursive: true, persistent: true }, () => copyFileSync("dev.ts", "dev.ts"));

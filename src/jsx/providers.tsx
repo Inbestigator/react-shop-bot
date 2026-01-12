@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createContext, type PropsWithChildren, useContext, useState } from "react";
-import type { Cart } from "./types";
+import type { Cart } from "../types";
 
 const queryClient = new QueryClient();
 
@@ -24,9 +24,7 @@ export default function Providers({ children }: Readonly<PropsWithChildren>) {
   const [page, setPage] = useState(1);
   return (
     <QueryClientProvider client={queryClient}>
-      <ShopContext.Provider value={{ cart, setCart, page, setPage }}>
-        {children}
-      </ShopContext.Provider>
+      <ShopContext.Provider value={{ cart, setCart, page, setPage }}>{children}</ShopContext.Provider>
     </QueryClientProvider>
   );
 }
