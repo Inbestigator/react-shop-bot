@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createContext, type PropsWithChildren, useContext, useState } from "react";
+import { createContext, type PropsWithChildren, useContext, useMemo, useState } from "react";
 import type { Cart } from "../types";
 
 const queryClient = new QueryClient();
@@ -22,9 +22,10 @@ export function useShop() {
 export default function Providers({ children }: Readonly<PropsWithChildren>) {
   const [cart, setCart] = useState<Cart>([]);
   const [page, setPage] = useState(1);
+  const shop = useMemo(() => ({ cart, setCart, page, setPage }), [cart, page]);
   return (
     <QueryClientProvider client={queryClient}>
-      <ShopContext.Provider value={{ cart, setCart, page, setPage }}>{children}</ShopContext.Provider>
+      <ShopContext.Provider value={shop}>{children}</ShopContext.Provider>
     </QueryClientProvider>
   );
 }

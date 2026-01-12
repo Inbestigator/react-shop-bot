@@ -1,8 +1,9 @@
-export type Product = {
+export interface Product {
   id: number;
   title: string;
   description: string;
   thumbnail: string;
   price: number;
-};
+}
+
 export type Cart = Product[];

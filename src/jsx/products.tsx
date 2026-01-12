@@ -6,12 +6,12 @@ import { removeFromCartAction } from "../utils/remove-from-cart";
 import { PaginationButtons } from "./pagination";
 import { useShop } from "./providers";
 
-type ProductsRes = {
+interface ProductsRes {
   products: Product[];
   total: number;
   skip: number;
   limit: number;
-};
+}
 
 export function Products({ showCheckout }: Readonly<{ showCheckout: () => void }>) {
   const { cart, setCart, page, setPage } = useShop();
