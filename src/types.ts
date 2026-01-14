@@ -6,4 +6,9 @@ export interface Product {
   price: number;
 }
 
-export type Cart = Product[];
+export interface ProductsRes {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+}

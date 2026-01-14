@@ -1,24 +1,13 @@
 import { ActionRow, Button } from "@dressed/react";
+import { useShop } from "./providers";
 
-export function PaginationButtons({
-  currentPage,
-  totalPages,
-  ...fns
-}: Readonly<
-  { currentPage: number; totalPages?: number } & (
-    | { disabled: boolean }
-    | { setPage: React.Dispatch<React.SetStateAction<number>> }
-  )
->) {
-  const disabled = "disabled" in fns && fns.disabled;
-  const onNext = "setPage" in fns ? () => fns.setPage((p) => p + 1) : undefined;
-  const onPrev = "setPage" in fns ? () => fns.setPage((p) => p - 1) : undefined;
-
+export function PaginationButtons({ totalPages, disabled }: Readonly<{ totalPages?: number; disabled?: boolean }>) {
+  const { page, setPage } = useShop();
   return (
     <ActionRow>
-      <Button onClick={() => onPrev?.()} label="◀" disabled={currentPage === 1 || disabled} />
-      <Button custom_id="activepage" label={`${currentPage} / ${totalPages ?? "?"}`} style="Secondary" disabled />
-      <Button onClick={() => onNext?.()} label="▶" disabled={currentPage === totalPages || disabled} />
+      <Button onClick={() => setPage((p) => p - 1)} label="◀" disabled={page === 1 || disabled} />
+      <Button custom_id="active" label={`${page} / ${totalPages ?? "?"}`} style="Secondary" disabled />
+      <Button onClick={() => setPage((p) => p + 1)} label="▶" disabled={page === totalPages || disabled} />
     </ActionRow>
   );
 }

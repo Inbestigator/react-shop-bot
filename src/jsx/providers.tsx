@@ -1,15 +1,20 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createContext, type PropsWithChildren, useContext, useMemo, useState } from "react";
-import type { Cart } from "../types";
+import {
+  createContext,
+  type Dispatch,
+  type PropsWithChildren,
+  type SetStateAction,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
+import type { Product } from "../types";
+
+type State<T, V extends string> = { [K in V]: T } & { [K in `set${Capitalize<V>}`]: Dispatch<SetStateAction<T>> };
+type Shop = State<Product[], "cart"> & State<number, "page"> & State<"products" | "checkout", "view">;
 
 const queryClient = new QueryClient();
-
-const ShopContext = createContext<{
-  cart: Cart;
-  setCart: React.Dispatch<React.SetStateAction<Cart>>;
-  page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-} | null>(null);
+const ShopContext = createContext<Shop | null>(null);
 
 export function useShop() {
   const context = useContext(ShopContext);
@@ -20,9 +25,10 @@ export function useShop() {
 }
 
 export default function Providers({ children }: Readonly<PropsWithChildren>) {
-  const [cart, setCart] = useState<Cart>([]);
-  const [page, setPage] = useState(1);
-  const shop = useMemo(() => ({ cart, setCart, page, setPage }), [cart, page]);
+  const [cart, setCart] = useState<Shop["cart"]>([]);
+  const [page, setPage] = useState<Shop["page"]>(1);
+  const [view, setView] = useState<Shop["view"]>("products");
+  const shop = useMemo(() => ({ cart, setCart, page, setPage, view, setView }), [cart, page, view]);
   return (
     <QueryClientProvider client={queryClient}>
       <ShopContext.Provider value={shop}>{children}</ShopContext.Provider>
